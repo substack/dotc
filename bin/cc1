@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var through = require('through');
+var split = require('split');
+var argv = require('optimist').argv;
+var spawn = require('child_process').spawn;
+
+if (!argv.E) {
+    var cc = spawn('/usr/lib/gcc/x86_64-linux-gnu/4.6/cc1', process.argv.slice(2));
+    cc.stdout.pipe(process.stdout);
+    cc.stderr.pipe(process.stderr);
+    cc.on('exit', function (code) { process.exit(code) });
+    return;
+}
+
+if (argv.o === undefined) argv.o = '-';
+if (argv._.length === 0) argv._.push('-');
+
+var file = argv._[0];
+var input = file === '-' ? process.stdin : fs.createReadStream(file);
+var output = argv.o === '-' ? process.stdout : fs.createWriteStream(argv.o);
+
+var cc = spawn('gcc', [ '-E', '-' ]); 
+cc.stdout.pipe(output);
+cc.stderr.pipe(process.stderr);
+
+var src = input.pipe(split()).pipe(through(function (line) {
+    if (/^#require\b/.test(line)) {
+        this.queue('int foo (int n) { return n * 100; }\n');
+    }
+    else this.queue(line + '\n');
+})).pipe(cc.stdin);

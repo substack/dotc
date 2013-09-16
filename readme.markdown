@@ -1,8 +1,10 @@
 # dotc
 
-node-style `#require` calls for c!
+use node-style `#require` calls and packages in c!
 
-dotc is a preprocessor that
+dotc is a preprocessor that copies the semantics of
+[node.js's module lookup algorithm](http://nodejs.org/docs/latest/api/modules.html#modules_modules)
+for c programs
 
 # example
 
@@ -10,12 +12,10 @@ dotc is a preprocessor that
 #require ""
 ```
 
+gcc -no-integrated-cpp -Bbin main.c
+
 # publishing
 
-To publish your package to the dotc repository, just publish your package to npm
-with a `.c` suffix!
-
-Example dotc package name: `hyperset.c`
-
+Publish your c libraries to npm with a `.c` suffix. For example: `hyperset.c`.
 
 
