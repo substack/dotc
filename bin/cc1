@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 
 var fs = require('fs');
-var through = require('through');
+var path = require('path');
+
 var split = require('split');
 var argv = require('optimist').argv;
 var spawn = require('child_process').spawn;
 var copy = require('shallow-copy');
 
 var gccPaths = require('../lib/gcc_paths.js');
+var parse = require('../lib/parse.js');
+var gccbin = path.basename(process.argv[1]);
 
 if (!argv.E) return gccPaths(function (err, paths) {
     if (err) {
@@ -17,7 +20,7 @@ if (!argv.E) return gccPaths(function (err, paths) {
     var env = copy(process.env);
     env.PATH = paths + ':' + env.PATH;
     
-    var cc = spawn('cc1', process.argv.slice(2), { env: env });
+    var cc = spawn(gccbin, process.argv.slice(2), { env: env });
     cc.stdout.pipe(process.stdout);
     cc.stderr.pipe(process.stderr);
     cc.on('exit', function (code) { process.exit(code) });
@@ -27,7 +30,12 @@ if (!argv.E) return gccPaths(function (err, paths) {
 if (argv.o === undefined) argv.o = '-';
 if (argv._.length === 0) argv._.push('-');
 
-var file = argv._[0];
+var file;
+if (gccbin === 'cc1plus') {
+    file = argv.E; // ONLY BECAUSE OF WONKY PARSING
+}
+else file = argv._[0];
+
 var input = file === '-' ? process.stdin : fs.createReadStream(file);
 var output = argv.o === '-' ? process.stdout : fs.createWriteStream(argv.o);
 
@@ -35,9 +43,5 @@ var cc = spawn('gcc', [ '-E', '-' ]);
 cc.stdout.pipe(output);
 cc.stderr.pipe(process.stderr);
 
-var src = input.pipe(split()).pipe(through(function (line) {
-    if (/^#require\b/.test(line)) {
-        this.queue('int foo (int n) { return n * 100; }\n');
-    }
-    else this.queue(line + '\n');
-})).pipe(cc.stdin);
+var cwd = file ? path.dirname(file) : process.cwd();
+input.pipe(split()).pipe(parse(false, cwd)).pipe(cc.stdin);
