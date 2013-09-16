@@ -5,14 +5,24 @@ var through = require('through');
 var split = require('split');
 var argv = require('optimist').argv;
 var spawn = require('child_process').spawn;
+var copy = require('shallow-copy');
 
-if (!argv.E) {
-    var cc = spawn('/usr/lib/gcc/x86_64-linux-gnu/4.6/cc1', process.argv.slice(2));
+var gccPaths = require('../lib/gcc_paths.js');
+
+if (!argv.E) return gccPaths(function (err, paths) {
+    if (err) {
+        console.error(err && err.stack || err);
+        return process.exit(1);
+    }
+    var env = copy(process.env);
+    env.PATH = paths + ':' + env.PATH;
+    
+    var cc = spawn('cc1', process.argv.slice(2), { env: env });
     cc.stdout.pipe(process.stdout);
     cc.stderr.pipe(process.stderr);
     cc.on('exit', function (code) { process.exit(code) });
     return;
-}
+});
 
 if (argv.o === undefined) argv.o = '-';
 if (argv._.length === 0) argv._.push('-');
