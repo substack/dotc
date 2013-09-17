@@ -3,7 +3,6 @@
 var fs = require('fs');
 var path = require('path');
 
-var split = require('split');
 var argv = require('optimist').argv;
 var spawn = require('child_process').spawn;
 var copy = require('shallow-copy');
@@ -44,4 +43,4 @@ cc.stdout.pipe(output);
 cc.stderr.pipe(process.stderr);
 
 var cwd = file ? path.dirname(file) : process.cwd();
-input.pipe(split()).pipe(parse(false, cwd)).pipe(cc.stdin);
+input.pipe(parse(false, cwd)).pipe(cc.stdin);
