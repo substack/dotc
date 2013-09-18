@@ -43,4 +43,4 @@ cc.stdout.pipe(output);
 cc.stderr.pipe(process.stderr);
 
 var cwd = file ? path.dirname(file) : process.cwd();
-input.pipe(parse(false, cwd)).pipe(cc.stdin);
+input.pipe(parse(cwd)).pipe(cc.stdin);

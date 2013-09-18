@@ -4,6 +4,7 @@ var path = require('path');
 var argv = require('optimist').argv;
 
 var prefix = [
+    '-x', 'c++', // until we have a preprocessor to do namespaces
     '-no-integrated-cpp',
     '-B', path.join(__dirname, 'ccbin')
 ];
