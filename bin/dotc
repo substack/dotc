@@ -1,47 +1,40 @@
 #!/usr/bin/env node
 var spawn = require('child_process').spawn;
-var fs = require('fs');
-var path = require('path');
-var parse = require('../lib/parse.js');
+var load = require('../lib/load.js');
 
 var args = process.argv.slice(2);
 for (var i = 0; i < args.length; i++) {
-    if (/^-\w{2,}$/.test(args[i])) {
+    if (/-[\w-]{2,}($|=)/.test(args[i])) {
         args[i] = '-' + args[i];
     }
 }
+
 var argv = require('minimist')(args, {
-    boolean: [ 'c', 'S', 'E', 'v', 'help' ],
+    'boolean': [ 'c', 'S', 'E', 'v', '###', 'pipe', 'help' ]
 });
 
-/*
-var prefix = [
-    '-x', 'c++', // until we have a preprocessor to do namespaces
-    '-D', 'DOTC',
-    //'-no-integrated-cpp',
-    //'-B', path.join(__dirname, 'ccbin')
-];
-*/
+var command = process.argv[2];
+if (command === 'pre') {
+    return load(argv._.slice(1)).pipe(process.stdout);
+}
+else if (command === 'search') {
+    console.error('search not yet implemented');
+    process.exit(1);
+}
+else if (command === 'build') {
+    process.argv.splice(2, 1);
+    argv._.shift();
+}
 
-/*
-var args_ = prefix.concat(process.argv.slice(2));
-var ps = spawn('gcc', args_.filter(function () {
-});
-ps.stdout.pipe(process.stdout);
-ps.stderr.pipe(process.stderr);
-*/
+var gargs = process.argv.slice(2);
+for (var i = 0; i < argv._.length; i++) {
+    var ix = gargs.indexOf(argv._[i]);
+    if (ix >= 0) gargs.splice(ix, 1);
+}
+gargs.unshift('-x', 'c++', '-D', 'DOTC', '-');
 
-var files = argv._.slice();
-(function next () {
-    //if (files.length === 0) return ps.stdin.end();
-    if (files.length === 0) return;
-    var file = files.shift();
-    var rs = fs.createReadStream(file);
-    
-    rs.pipe(parse(path.dirname(file)))
-        .pipe(process.stdout)
-        //.pipe(ps.stdin, { end: false })
-    ;
-    rs.on('data', function () {});
-    rs.on('end', next);
-})();
+var cmd = process.env.CC || 'gcc';
+var gcc = spawn(cmd, gargs);
+gcc.stdout.pipe(process.stdout);
+gcc.stderr.pipe(process.stderr);
+load(argv._).pipe(gcc.stdin);
