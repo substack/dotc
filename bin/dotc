@@ -1,17 +1,47 @@
 #!/usr/bin/env node
 var spawn = require('child_process').spawn;
+var fs = require('fs');
 var path = require('path');
-var argv = require('optimist').argv;
+var parse = require('../lib/parse.js');
 
+var args = process.argv.slice(2);
+for (var i = 0; i < args.length; i++) {
+    if (/^-\w{2,}$/.test(args[i])) {
+        args[i] = '-' + args[i];
+    }
+}
+var argv = require('minimist')(args, {
+    boolean: [ 'c', 'S', 'E', 'v', 'help' ],
+});
+
+/*
 var prefix = [
     '-x', 'c++', // until we have a preprocessor to do namespaces
-    '-no-integrated-cpp',
-    '-B', path.join(__dirname, 'ccbin')
+    '-D', 'DOTC',
+    //'-no-integrated-cpp',
+    //'-B', path.join(__dirname, 'ccbin')
 ];
-if (argv.flags) {
-    console.log(prefix.join(' '));
-}
-else {
-    var args = prefix.concat(process.argv.slice(2));
-    spawn('gcc', args, { stdio: 'inherit' });
-}
+*/
+
+/*
+var args_ = prefix.concat(process.argv.slice(2));
+var ps = spawn('gcc', args_.filter(function () {
+});
+ps.stdout.pipe(process.stdout);
+ps.stderr.pipe(process.stderr);
+*/
+
+var files = argv._.slice();
+(function next () {
+    //if (files.length === 0) return ps.stdin.end();
+    if (files.length === 0) return;
+    var file = files.shift();
+    var rs = fs.createReadStream(file);
+    
+    rs.pipe(parse(path.dirname(file)))
+        .pipe(process.stdout)
+        //.pipe(ps.stdin, { end: false })
+    ;
+    rs.on('data', function () {});
+    rs.on('end', next);
+})();
