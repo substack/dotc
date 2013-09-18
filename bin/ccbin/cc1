@@ -7,8 +7,8 @@ var argv = require('optimist').argv;
 var spawn = require('child_process').spawn;
 var copy = require('shallow-copy');
 
-var gccPaths = require('../lib/gcc_paths.js');
-var parse = require('../lib/parse.js');
+var gccPaths = require('../../lib/gcc_paths.js');
+var parse = require('../../lib/parse.js');
 var gccbin = path.basename(process.argv[1]);
 
 if (!argv.E) return gccPaths(function (err, paths) {

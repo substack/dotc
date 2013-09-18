@@ -5,9 +5,9 @@ var argv = require('optimist').argv;
 
 var prefix = [
     '-no-integrated-cpp',
-    '-B', path.join(__dirname, 'bin')
+    '-B', path.join(__dirname, 'ccbin')
 ];
-if (argv.cmd) {
+if (argv.flags) {
     console.log(prefix.join(' '));
 }
 else {
