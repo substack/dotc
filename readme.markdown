@@ -6,6 +6,8 @@ dotc is a c/c++ preprocessor that copies the semantics of
 [node.js's module lookup algorithm](http://nodejs.org/docs/latest/api/modules.html#modules_modules)
 without modifying anything else about the c language
 
+[![build status](https://secure.travis-ci.org/substack/dotc.png)](http://travis-ci.org/substack/dotc)
+
 # example
 
 ## single export
