@@ -1,0 +1,20 @@
+usage: dotc COMMAND OPTIONS FILES
+
+  dotc build OPTIONS FILES
+  dotc OPTIONS FILES
+
+    Preprocess FILES and then build the generated source using `$CC` or
+    `gcc` if `$CC` is unset, forwarding all the OPTIONS to the `$CC` command.
+
+  dotc pre FILES
+
+    Only preprocess FILES without compiling, printing the results to stdout.
+
+  dotc search TERMS
+
+    Search npm for dotc packages matching the search TERMS.
+
+  dotc help
+
+    Show this message.
+
