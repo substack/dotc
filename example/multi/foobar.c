@@ -1,9 +1,9 @@
-#export foo as foo
+#export foo
 int foo (int n) {
     return n * 111;
 }
 
-#export bar as bar
-int bar (int n) {
+#export bazzy as bar
+int bazzy (int n) {
     return n * 10;
 }
