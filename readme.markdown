@@ -81,6 +81,38 @@ int main(int argc, char **argv) {
 }
 ```
 
+# syntax
+
+To import a relative (from the requiring file) module, do:
+
+``` c
+#require "./foo.c" as foo
+```
+
+To import a module installed with npm, do:
+
+``` c
+#require "beepboop.c" as bb
+```
+
+To export a single item from your module, do:
+
+```
+#export= foo
+```
+
+To export `localname` that requiring files will see as `name`, do:
+
+```
+#export localname as name
+```
+
+If `localname` and `name` are the same, you can just do:
+
+```
+#export name
+```
+
 # under the hood
 
 Files loaded with `#require` are automatically wrapped in a `namespace {}` block
