@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 var spawn = require('child_process').spawn;
 var fs = require('fs');
-var load = require('../lib/load.js');
+var load = require('../index.js');
 
 var args = process.argv.slice(2);
 for (var i = 0; i < args.length; i++) {
