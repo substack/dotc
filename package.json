@@ -15,7 +15,9 @@
   },
   "devDependencies": {
     "tap": "~0.4.4",
-    "uppercase.c": "~0.0.0"
+    "uppercase.c": "~0.0.0",
+    "concat-stream": "~1.0.1",
+    "mkdirp": "~0.3.5"
   },
   "scripts": {
     "test": "tap test/*.js"
