@@ -1,9 +1,10 @@
 # dotc
 
-use node-style `#require` and `#export=` directives in c!
+use node-style `#require` and `#export` directives in c!
 
 dotc is a c/c++ preprocessor that copies the semantics of
 [node.js's module lookup algorithm](http://nodejs.org/docs/latest/api/modules.html#modules_modules)
+without modifying anything else about the c language
 
 # example
 
@@ -170,6 +171,8 @@ int foo (int n) {
 # packages
 
 ## finding c modules
+
+TODO: not yet implemented
 
 You can use the `dotc search` command to search npm:
 

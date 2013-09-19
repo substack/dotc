@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 var spawn = require('child_process').spawn;
+var fs = require('fs');
 var load = require('../lib/load.js');
 
 var args = process.argv.slice(2);
@@ -10,7 +11,7 @@ for (var i = 0; i < args.length; i++) {
 }
 
 var argv = require('minimist')(args, {
-    'boolean': [ 'c', 'S', 'E', 'v', '###', 'pipe', 'help' ]
+    'boolean': [ 'c', 'S', 'E', 'v', '###', 'pipe', 'help', 'h' ]
 });
 
 var command = process.argv[2];
@@ -20,6 +21,9 @@ if (command === 'pre') {
 else if (command === 'search') {
     console.error('search not yet implemented');
     process.exit(1);
+}
+else if (command === 'help' || command === undefined || argv.h || argv.help) {
+    return fs.createReadStream(__dirname + '/usage.txt').pipe(process.stdout);
 }
 else if (command === 'build') {
     process.argv.splice(2, 1);
