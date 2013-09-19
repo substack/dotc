@@ -7,7 +7,12 @@ dotc is a c/c++ preprocessor that copies the semantics of
 
 # example
 
-First export a function with `export=` in `foo.c`:
+## single export
+
+The first form of exports uses an `#export=` directive to export exactly 1
+thing from a file.
+
+In `foo.c` we'll export the `foo()` function:
 
 ``` c
 #export= foo
@@ -36,6 +41,44 @@ Now use the `dotc` command to compile `main.c` with `gcc`:
 $ dotc main.c -o main
 $ ./main 3
 333
+```
+
+## multi export
+
+We can also export multiple declarations from a file and expose them through
+property-lookup (dot) syntax.
+
+Suppose we have a file `foobar.c` that has 2 exports: `foo` and `bar`:
+
+``` c
+#export foo
+int foo (int n) {
+    return n * 111;
+}
+
+#export bazzy as bar
+int bazzy (int n) {
+    return n * 10;
+}
+```
+
+Note that in the second form, `#export bazzy as bar`, the exported token name
+need not match the local definition name.
+
+Now in `main.c` we can reference both functions under the `FB` name:
+
+``` c
+#include "stdio.h"
+#include "stdlib.h"
+
+#require "./foobar.c" as FB
+
+int main(int argc, char **argv) {
+    int f = FB.foo(atoi(argv[1]));
+    int b = FB.bar(atoi(argv[2]));
+    printf("%d\n", f + b);
+    return 0;
+}
 ```
 
 # under the hood
