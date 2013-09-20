@@ -174,16 +174,17 @@ int foo (int n) {
 
 ## finding c modules
 
-TODO: not yet implemented
-
 You can use the `dotc search` command to search npm:
 
 ```
-dotc search TERMS...
+substack : ~ $ dotc search upper
+NAME         DESCRIPTION                       AUTHOR     DATE              VERSION KEYWORDS
+uppercase.c  uppercase a string in-place in c  =substack  2013-09-19 04:21  0.0.0  dotc c c++ pre
+substack : ~ $ 
 ```
 
-All the `dotc search` command does is a regular npm search but with the results
-filtered to only show packages ending in `.c`.
+`dotc search` just filters `npm search` by packages ending in `.c`, `.cc`,
+`.cpp`, and `.cxx`.
 
 ## publishing c modules
 

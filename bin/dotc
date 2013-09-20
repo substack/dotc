@@ -2,6 +2,7 @@
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 var load = require('../index.js');
+var search = require('../lib/search.js');
 
 var args = process.argv.slice(2);
 for (var i = 0; i < args.length; i++) {
@@ -19,8 +20,13 @@ if (command === 'pre') {
     return load(argv._.slice(1)).pipe(process.stdout);
 }
 else if (command === 'search') {
-    console.error('search not yet implemented');
-    process.exit(1);
+    var q = search(process.argv.slice(3))
+    q.pipe(process.stdout);
+    q.on('error', function (err) {
+        console.error(err + '');
+        process.exit(1);
+    });
+    return;
 }
 else if (command === 'help' || command === undefined || argv.h || argv.help) {
     return fs.createReadStream(__dirname + '/usage.txt').pipe(process.stdout);
