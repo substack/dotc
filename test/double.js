@@ -30,6 +30,6 @@ test('double inclusion', function (t) {
     var pre = spawn(bin, [ 'pre', __dirname + '/double/main.c' ]);
     pre.stdout.pipe(concat(function (body) {
         var m = body.toString('utf8').match(/\/\/ X FILE/g);
-        t.equal(m.length, 'include the X FILE only once');
+        t.equal(m.length, 1, 'include the X FILE only once');
     }));
 });
