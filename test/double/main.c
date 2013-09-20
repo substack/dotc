@@ -2,7 +2,7 @@
 #include "stdlib.h"
 
 #require "./bar.c" as b
-#require "./foo.c" as f
+#require "./prefoo.c" as f
 
 int main(int argc, char **argv) {
     printf("%d\n", f(atoi(argv[1]) + b(atoi(argv[2]))));
