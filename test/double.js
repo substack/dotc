@@ -10,7 +10,7 @@ mkdirp.sync(tmp);
 var bin = __dirname + '/../bin/dotc';
 
 test('double inclusion', function (t) {
-    t.plan(3);
+    t.plan(4);
     var outfile = path.join(tmp, Math.random() + '.out');
     var ps = spawn(bin, [ __dirname + '/double/main.c', '-o', outfile ]);
     
@@ -26,4 +26,10 @@ test('double inclusion', function (t) {
             t.equal(code, 0);
         });
     });
+    
+    var pre = spawn(bin, [ 'pre', __dirname + '/double/main.c' ]);
+    pre.stdout.pipe(concat(function (body) {
+        var m = body.toString('utf8').match(/\/\/ X FILE/g);
+        t.equal(m.length, 'include the X FILE only once');
+    }));
 });
