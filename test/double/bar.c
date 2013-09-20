@@ -1,6 +1,6 @@
 #export= foo
-#require "./x.c" as x
+#require "./baz.c" as b
 
 int foo (int n) {
-    return x(n * 2);
+    return b(n * 2);
 }
