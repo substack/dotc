@@ -14,12 +14,17 @@ for (var i = 0; i < args.length; i++) {
 var argv = require('minimist')(args, {
     'boolean': [ 'c', 'S', 'E', 'v', '###', 'pipe', 'help', 'h' ]
 });
+var files = argv._.filter(function (file) {
+    return !/\.a$/.test(file);
+});
 
 var command = process.argv[2];
 if (command === 'pre') {
-    return load(argv._.slice(1)).pipe(process.stdout);
+    files.shift();
+    return load(files).pipe(process.stdout);
 }
 else if (command === 'search') {
+    files.shift();
     var q = search(process.argv.slice(3))
     q.pipe(process.stdout);
     q.on('error', function (err) {
@@ -32,13 +37,13 @@ else if (command === 'help' || command === undefined || argv.h || argv.help) {
     return fs.createReadStream(__dirname + '/usage.txt').pipe(process.stdout);
 }
 else if (command === 'build') {
+    files.shift();
     process.argv.splice(2, 1);
-    argv._.shift();
 }
 
 var gargs = process.argv.slice(2);
-for (var i = 0; i < argv._.length; i++) {
-    var ix = gargs.indexOf(argv._[i]);
+for (var i = 0; i < files.length; i++) {
+    var ix = gargs.indexOf(files[i]);
     if (ix >= 0) gargs.splice(ix, 1);
 }
 gargs.unshift('-x', 'c++', '-D', 'DOTC', '-');
@@ -47,4 +52,4 @@ var cmd = process.env.CC || 'gcc';
 var gcc = spawn(cmd, gargs);
 gcc.stdout.pipe(process.stdout);
 gcc.stderr.pipe(process.stderr);
-load(argv._).pipe(gcc.stdin);
+load(files).pipe(gcc.stdin);
