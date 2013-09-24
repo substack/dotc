@@ -56,13 +56,11 @@ for (var i = 0; i < files.length; i++) {
 if(afiles.length > 0){
    for(var i = 0; i < afiles.length; i++){
       var iy = gargs.indexOf(afiles[i]);
-      if(iy >= 0) gargs.splice(iy, 1);
-   }
-
-   for(var i = 0; i < afiles.length; i++){
-      gargs.unshift(afiles[i])
-   }
-    
+      if(iy >= 0) {
+         gargs.splice(iy, 1);
+         gargs.unshift(afiles[i])
+      }
+}
    gargs.unshift('-x', 'none')
 }
 
