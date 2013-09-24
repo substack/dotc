@@ -46,19 +46,27 @@ else if (command === 'build') {
 }
 
 var gargs = process.argv.slice(2);
+
 for (var i = 0; i < files.length; i++) {
     var ix = gargs.indexOf(files[i]);
     if (ix >= 0) gargs.splice(ix, 1);
 }
 
-gargs.unshift('-x', 'c++', '-D', 'DOTC', '-');
 
 if(afiles.length > 0){
-   gargs.push('-x', 'none')
    for(var i = 0; i < afiles.length; i++){
-      gargs.push(afiles[i])
-   } 
+      var iy = gargs.indexOf(afiles[i]);
+      if(iy >= 0) gargs.splice(iy, 1);
+   }
+
+   for(var i = 0; i < afiles.length; i++){
+      gargs.unshift(afiles[i])
+   }
+    
+   gargs.unshift('-x', 'none')
 }
+
+gargs.unshift('-x', 'c++', '-D', 'DOTC', '-');
 
 var cmd = process.env.CC || 'gcc';
 var gcc = spawn(cmd, gargs);
