@@ -60,7 +60,7 @@ if(afiles.length > 0){
          gargs.splice(iy, 1);
          gargs.unshift(afiles[i])
       }
-}
+   }
    gargs.unshift('-x', 'none')
 }
 
