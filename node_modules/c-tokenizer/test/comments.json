@@ -1,0 +1,146 @@
+[
+  {
+    "type": "directive",
+    "source": "#include"
+  },
+  {
+    "type": "whitespace",
+    "source": " "
+  },
+  {
+    "type": "quote",
+    "source": "\"stdio.h\""
+  },
+  {
+    "type": "whitespace",
+    "source": "\n"
+  },
+  {
+    "type": "directive",
+    "source": "#include"
+  },
+  {
+    "type": "whitespace",
+    "source": " "
+  },
+  {
+    "type": "quote",
+    "source": "\"stdlib.h\""
+  },
+  {
+    "type": "whitespace",
+    "source": "\n\n"
+  },
+  {
+    "type": "identifier",
+    "source": "int"
+  },
+  {
+    "type": "whitespace",
+    "source": " "
+  },
+  {
+    "type": "identifier",
+    "source": "main"
+  },
+  {
+    "type": "open paren",
+    "source": "("
+  },
+  {
+    "type": "identifier",
+    "source": "int"
+  },
+  {
+    "type": "whitespace",
+    "source": " "
+  },
+  {
+    "type": "identifier",
+    "source": "argc"
+  },
+  {
+    "type": "operator",
+    "source": ","
+  },
+  {
+    "type": "whitespace",
+    "source": " "
+  },
+  {
+    "type": "identifier",
+    "source": "char"
+  },
+  {
+    "type": "whitespace",
+    "source": " "
+  },
+  {
+    "type": "operator",
+    "source": "**"
+  },
+  {
+    "type": "identifier",
+    "source": "argv"
+  },
+  {
+    "type": "close paren",
+    "source": ")"
+  },
+  {
+    "type": "whitespace",
+    "source": " "
+  },
+  {
+    "type": "open curly",
+    "source": "{"
+  },
+  {
+    "type": "whitespace",
+    "source": "\n    "
+  },
+  {
+    "type": "area comment",
+    "source": "/* printf(\"%d\\n\", foo(atoi(argv[1]))); */"
+  },
+  {
+    "type": "whitespace",
+    "source": "\n    "
+  },
+  {
+    "type": "identifier",
+    "source": "return"
+  },
+  {
+    "type": "whitespace",
+    "source": " "
+  },
+  {
+    "type": "number",
+    "source": "0"
+  },
+  {
+    "type": "operator",
+    "source": ";"
+  },
+  {
+    "type": "whitespace",
+    "source": " "
+  },
+  {
+    "type": "line comment",
+    "source": "// beep boop"
+  },
+  {
+    "type": "whitespace",
+    "source": "\n"
+  },
+  {
+    "type": "close curly",
+    "source": "}"
+  },
+  {
+    "type": "whitespace",
+    "source": "\n"
+  }
+]
