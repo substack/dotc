@@ -1,6 +1,6 @@
 {
   "name": "dotc",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "c module system with #require and #export, node-style",
   "main": "index.js",
   "bin": {
