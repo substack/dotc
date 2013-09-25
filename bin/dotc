@@ -18,6 +18,10 @@ var files = argv._.filter(function (file) {
     return !/\.a$/.test(file);
 });
 
+var afiles = argv._.filter(function (file) {
+    return /\.a$/.test(file);
+});
+
 var command = process.argv[2];
 if (command === 'pre') {
     files.shift();
@@ -42,10 +46,24 @@ else if (command === 'build') {
 }
 
 var gargs = process.argv.slice(2);
+
 for (var i = 0; i < files.length; i++) {
     var ix = gargs.indexOf(files[i]);
     if (ix >= 0) gargs.splice(ix, 1);
 }
+
+
+if(afiles.length > 0){
+   for(var i = 0; i < afiles.length; i++){
+      var iy = gargs.indexOf(afiles[i]);
+      if(iy >= 0) {
+         gargs.splice(iy, 1);
+         gargs.unshift(afiles[i])
+      }
+   }
+   gargs.unshift('-x', 'none')
+}
+
 gargs.unshift('-x', 'c++', '-D', 'DOTC', '-');
 
 var cmd = process.env.CC || 'gcc';
