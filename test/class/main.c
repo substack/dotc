@@ -1,6 +1,8 @@
+#include <stdio.h>
+
 #require "./thing.c" as Thing
 
 int main() {
   Thing someThing;
-  someThing.add(2,3);
+  printf("%d\n", someThing.add(2,3));
 }
