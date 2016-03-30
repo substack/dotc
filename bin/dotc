@@ -1,73 +1,73 @@
 #!/usr/bin/env node
-var spawn = require('child_process').spawn;
-var fs = require('fs');
-var load = require('../index.js');
-var search = require('../lib/search.js');
+var spawn = require('child_process').spawn
+var fs = require('fs')
+var load = require('../index.js')
+var search = require('../lib/search.js')
 
-var args = process.argv.slice(2);
-for (var i = 0; i < args.length; i++) {
+function main () {
+  var args = process.argv.slice(2)
+  for (var i = 0; i < args.length; i++) {
     if (/-[\w-]{2,}($|=)/.test(args[i])) {
-        args[i] = '-' + args[i];
+      args[i] = '-' + args[i]
     }
-}
+  }
 
-var argv = require('minimist')(args, {
+  var argv = require('minimist')(args, {
     'boolean': [ 'c', 'S', 'E', 'v', '###', 'pipe', 'help', 'h' ]
-});
-var files = argv._.filter(function (file) {
-    return !/\.a$/.test(file);
-});
+  })
+  var files = argv._.filter(function (file) {
+    return !/\.a$/.test(file)
+  })
 
-var afiles = argv._.filter(function (file) {
-    return /\.a$/.test(file);
-});
+  var afiles = argv._.filter(function (file) {
+    return /\.a$/.test(file)
+  })
 
-var command = process.argv[2];
-if (command === 'pre') {
-    files.shift();
-    return load(files).pipe(process.stdout);
-}
-else if (command === 'search') {
-    files.shift();
+  var command = process.argv[2]
+  if (command === 'pre') {
+    files.shift()
+    return load(files).pipe(process.stdout)
+  } else if (command === 'search') {
+    files.shift()
     var q = search(process.argv.slice(3))
-    q.pipe(process.stdout);
+    q.pipe(process.stdout)
     q.on('error', function (err) {
-        console.error(err + '');
-        process.exit(1);
-    });
-    return;
-}
-else if (command === 'help' || command === undefined || argv.h || argv.help) {
-    return fs.createReadStream(__dirname + '/usage.txt').pipe(process.stdout);
-}
-else if (command === 'build') {
-    files.shift();
-    process.argv.splice(2, 1);
-}
+      console.error(err + '')
+      process.exit(1)
+    })
+    return
+  } else if (command === 'help' || command === undefined || argv.h || argv.help) {
+    return fs.createReadStream(__dirname + '/usage.txt').pipe(process.stdout)
+  } else if (command === 'build') {
+    files.shift()
+    process.argv.splice(2, 1)
+  }
 
-var gargs = process.argv.slice(2);
+  var gargs = process.argv.slice(2)
 
-for (var i = 0; i < files.length; i++) {
-    var ix = gargs.indexOf(files[i]);
-    if (ix >= 0) gargs.splice(ix, 1);
-}
+  for (i = 0; i < files.length; i++) {
+    var ix = gargs.indexOf(files[i])
+    if (ix >= 0) gargs.splice(ix, 1)
+  }
 
-
-if(afiles.length > 0){
-   for(var i = 0; i < afiles.length; i++){
-      var iy = gargs.indexOf(afiles[i]);
-      if(iy >= 0) {
-         gargs.splice(iy, 1);
-         gargs.unshift(afiles[i])
+  if (afiles.length > 0) {
+    for (i = 0; i < afiles.length; i++) {
+      var iy = gargs.indexOf(afiles[i])
+      if (iy >= 0) {
+        gargs.splice(iy, 1)
+        gargs.unshift(afiles[i])
       }
-   }
-   gargs.unshift('-x', 'none')
+    }
+    gargs.unshift('-x', 'none')
+  }
+
+  gargs.unshift('-x', 'c++', '-D', 'DOTC', '-')
+
+  var cmd = process.env.CC || 'gcc'
+  var gcc = spawn(cmd, gargs)
+  gcc.stdout.pipe(process.stdout)
+  gcc.stderr.pipe(process.stderr)
+  load(files).pipe(gcc.stdin)
 }
 
-gargs.unshift('-x', 'c++', '-D', 'DOTC', '-');
-
-var cmd = process.env.CC || 'gcc';
-var gcc = spawn(cmd, gargs);
-gcc.stdout.pipe(process.stdout);
-gcc.stderr.pipe(process.stderr);
-load(files).pipe(gcc.stdin);
+main()
