@@ -13,7 +13,7 @@ test('link .a file', function (t) {
     t.plan(5);
     //var outfile = path.join(, Math.random() + '.out');
     var ps = spawn('gcc', [ '-c', __dirname + '/link/calc_mean.cc', '-I', __dirname + '/link', '-o', tmp + '/calc_mean.o'])
-    
+
     ps.stderr.pipe(process.stderr);
     ps.stdout.pipe(process.stdout);
     ps.on('exit', function (code) {
@@ -34,10 +34,10 @@ test('link .a file', function (t) {
                 }));
                 r.on('exit', function (code) {
                   t.equal(code, 0);
-                }); 
+                });
             })
         })
 
-        
+
     });
 });

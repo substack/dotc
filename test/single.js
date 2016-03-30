@@ -13,7 +13,7 @@ test('single export', function (t) {
     t.plan(3);
     var outfile = path.join(tmp, Math.random() + '.out');
     var ps = spawn(bin, [ __dirname + '/single/main.c', '-o', outfile ]);
-    
+
     ps.stderr.pipe(process.stderr);
     ps.stdout.pipe(process.stdout);
     ps.on('exit', function (code) {

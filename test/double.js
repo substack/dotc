@@ -13,7 +13,7 @@ test('double inclusion', function (t) {
     t.plan(4);
     var outfile = path.join(tmp, Math.random() + '.out');
     var ps = spawn(bin, [ __dirname + '/double/main.c', '-o', outfile ]);
-    
+
     ps.stderr.pipe(process.stderr);
     ps.stdout.pipe(process.stdout);
     ps.on('exit', function (code) {
@@ -26,7 +26,7 @@ test('double inclusion', function (t) {
             t.equal(code, 0);
         });
     });
-    
+
     var pre = spawn(bin, [ 'pre', __dirname + '/double/main.c' ]);
     pre.stdout.pipe(concat(function (body) {
         var m = body.toString('utf8').match(/\/\/ X FILE/g);

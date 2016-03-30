@@ -13,7 +13,7 @@ test('load a module installed with npm', function (t) {
     t.plan(3);
     var outfile = path.join(tmp, Math.random() + '.out');
     var ps = spawn(bin, [ __dirname + '/module/main.c', '-o', outfile ]);
-    
+
     ps.stderr.pipe(process.stderr);
     ps.stdout.pipe(process.stdout);
     ps.on('exit', function (code) {
