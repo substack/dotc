@@ -23,7 +23,7 @@ test('multi export', function (t) {
       t.equal(body + '', '373\n')
     }))
     p.on('exit', function (code) {
-      t.equal(code, 0)
+      t.equal(code, 10)
     })
   })
 })

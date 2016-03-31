@@ -23,7 +23,7 @@ test('double inclusion', function (t) {
       t.equal(body + '', '3663\n')
     }))
     p.on('exit', function (code) {
-      t.equal(code, 0)
+      t.equal(code, 15)
     })
   })
 
